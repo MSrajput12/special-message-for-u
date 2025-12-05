@@ -800,7 +800,7 @@ body.sad::after {
 /* FROZEN HEADING TEXT */
 .card-box.sad h1 {
   background: linear-gradient(to right, #c7d2fe, #e0e7ff);
-  -webkit-background-clip: text;
+  -webkit-background-clip: text; /* FIXED */
   -webkit-text-fill-color: transparent;
 
   text-shadow: 0 4px 20px rgba(120, 140, 200, 0.25);
