@@ -869,102 +869,15 @@ tbody td:last-child {
   letter-spacing: 0.5px;
 }
 
-/* ---------- 🏠 TECH ACTION BAR & BUTTON (Boy Theme) ---------- */
+
+/* ---------- ⚡ TECH ACTION BAR (Back + Delete All) ---------- */
 .action-bar {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  margin-top: 25px;
-  margin-bottom: 40px;
-  padding: 0 20px;
-  animation: fadeInUp 0.8s ease 0.3s backwards;
-}
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-#backBtn {
-  /* 1. Tech Glass Look */
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  
-  /* 2. Shape & Size */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 14px 45px;
-  border-radius: 50px;
-  
-  /* 3. Text Style (Tech Blue) */
-  font-family: 'Poppins', sans-serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #2563eb; /* Royal Blue */
-  letter-spacing: 0.5px;
-  text-decoration: none;
-  
-  /* 4. Border & Tech Glow */
-  border: 2px solid rgba(37, 99, 235, 0.3); /* Blue Border */
-  box-shadow: 
-    0 10px 30px rgba(37, 99, 235, 0.15),
-    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-    
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  
-  /* 5. Smooth Physics */
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* Hover Background (Slide Animation - Blue Gradient) */
-#backBtn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  /* Tech Gradient: Blue -> Cyan */
-  background: linear-gradient(135deg, #2563eb, #06b6d4);
-  z-index: -1;
-  
-  /* Hidden Start */
-  transform: scaleX(0); 
-  transform-origin: right;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 50px;
-}
-
-/* 🔥 TECH HOVER EFFECT */
-#backBtn:hover {
-  transform: translateY(-5px) scale(1.02); /* Float Up */
-  color: white; /* Text White */
-  border-color: transparent;
-  
-  /* Neon Blue Shadow */
-  box-shadow: 0 15px 45px rgba(37, 99, 235, 0.4);
-}
-
-#backBtn:hover::before {
-  transform: scaleX(1); /* Slide Fill */
-  transform-origin: left;
-}
-
-#backBtn:active {
-  transform: translateY(-2px) scale(0.98);
-}
-
-/* ---------- 🏠 TECH ACTION BAR & BUTTON ---------- */
-.action-bar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 30px;
-  margin-bottom: 40px;
-  padding: 0 20px;
+  margin-top: 35px;
+  margin-bottom: 50px;
+  padding: 0 25px;
   animation: fadeInUp 0.8s ease 0.2s backwards;
 }
 
@@ -973,76 +886,145 @@ tbody td:last-child {
   to { opacity: 1; transform: translateY(0); }
 }
 
-#backBtn {
-  /* 1. Tech Glass Look */
-  background: rgba(255, 255, 255, 0.9);
+/* ---------- 🔴 DANGER NEON DELETE ALL BUTTON ---------- */
+#deleteAllBtn {
+  background: rgba(255, 0, 0, 0.2);
   backdrop-filter: blur(12px);
-  
-  /* 2. Shape & Size (Squircle for Tech feel) */
+  padding: 14px 30px;
+  border-radius: 14px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  color: #ff1a1a;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+
+  border: 2px solid rgba(255, 0, 0, 0.5);
+  box-shadow: 
+    0 10px 25px rgba(255, 0, 0, 0.25),
+    inset 0 0 20px rgba(255, 0, 0, 0.2);
+
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s ease;
+}
+
+#deleteAllBtn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #ff0000, #ff4d4d);
+  transform: scaleX(0);
+  transform-origin: left;
+  z-index: -1;
+  transition: transform 0.4s ease;
+}
+
+#deleteAllBtn:hover {
+  color: white;
+  transform: translateY(-4px);
+  box-shadow: 
+    0 15px 45px rgba(255, 0, 0, 0.45),
+    inset 0 0 25px rgba(255, 255, 255, 0.1);
+}
+
+#deleteAllBtn:hover::before {
+  transform: scaleX(1);
+}
+
+#deleteAllBtn:active {
+  transform: translateY(-1px) scale(0.98);
+}
+/* ---------- 🔵 ULTRA BLUE NEON BACK BUTTON ---------- */
+#backBtn {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  border-radius: 14px;
+  padding: 14px 38px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 14px 40px;
-  border-radius: 12px; /* Sharp corners = Techy */
-  
-  /* 3. Text Style */
-  color: #2563eb; /* Electric Blue */
+
+  color: #1d4ed8; /* Bright Royal Blue */
   font-family: 'Poppins', sans-serif;
   font-size: 1rem;
-  font-weight: 700;
-  text-decoration: none;
-  text-transform: uppercase; /* Strong Look */
+  font-weight: 800;
+  text-transform: uppercase;
   letter-spacing: 1px;
-  cursor: pointer;
-  
-  /* 4. Tech Border */
-  border: 2px solid rgba(37, 99, 235, 0.2);
-  border-bottom: 4px solid rgba(37, 99, 235, 0.1); /* 3D Base */
-  
-  /* 5. Shadows */
-  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.1);
-  
+
+  border: 2px solid rgba(37, 99, 235, 0.5);
   position: relative;
   overflow: hidden;
-  z-index: 1;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+
+  box-shadow: 
+    0 10px 25px rgba(37, 99, 235, 0.25),
+    inset 0 0 20px rgba(37, 99, 235, 0.2);
+
+  transition: all 0.35s ease;
 }
 
-/* 🔥 SLIDING CYBER GRADIENT */
 #backBtn::before {
-  content: '';
+  content: "";
   position: absolute;
-  top: 0; left: 0; width: 100%; height: 100%;
-  
-  /* Cyber Gradient: Blue -> Cyan */
+  inset: 0;
   background: linear-gradient(135deg, #2563eb, #06b6d4);
-  
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
   z-index: -1;
-  transform: scaleX(0); /* Hidden start */
-  transform-origin: right;
-  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-  border-radius: 10px;
 }
 
-/* Hover State (Laptop) */
 #backBtn:hover {
-  transform: translateY(-4px);
   color: white;
-  border-color: transparent;
-  
-  /* Neon Blue Glow */
-  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 
+    0 15px 40px rgba(37, 99, 235, 0.45),
+    inset 0 0 25px rgba(255, 255, 255, 0.1);
 }
 
 #backBtn:hover::before {
-  transform: scaleX(1); /* Slide In */
-  transform-origin: left;
+  transform: scaleX(1);
 }
 
 #backBtn:active {
   transform: translateY(-1px) scale(0.98);
 }
+
+
+
+/* ---------- 📱 MOBILE RESPONSIVE ---------- */
+@media (max-width: 600px) {
+  .action-bar {
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 10px;
+  }
+
+  #backBtn, 
+  #deleteAllBtn {
+    width: 100%;   /* full width buttons */
+    padding: 16px;
+    font-size: 1rem;
+  }
+}
+
+/* ---------- 📱 SMALL PHONES (very small) ---------- */
+@media (max-width: 380px) {
+  #backBtn,
+  #deleteAllBtn {
+    font-size: 0.9rem;
+    padding: 14px;
+  }
+}
+
 
 /* ---------- 📱 MOBILE & TABLET ADJUSTMENTS ---------- */
 

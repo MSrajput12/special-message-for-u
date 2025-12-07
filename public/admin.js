@@ -30,6 +30,29 @@ backBtn.addEventListener("click", () => {
   window.location.href = "index.html";
 });
 
+// 🔥 DELETE ALL BUTTON (Correct Code)
+const deleteAllBtn = document.getElementById("deleteAllBtn");
+
+deleteAllBtn.addEventListener("click", async () => {
+  try {
+    const response = await fetch(`${API_URL}/responses`, {
+      method: "DELETE"
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      await loadData(); // refresh table
+    } else {
+      console.log("❌ Failed to delete all!");
+    }
+
+  } catch (err) {
+    console.error("Delete all error:", err);
+  }
+});
+
+
 // Load data on page load
 window.addEventListener("load", loadData);
 
@@ -51,15 +74,21 @@ async function loadData() {
     const response = await fetch(`${API_URL}/responses`);
     const result = await response.json();
 
-    if (result.success && result.data.length > 0) {
-      allData = result.data;
+    // FIX: protect against null / undefined
+    allData = Array.isArray(result.data) ? result.data : [];
+
+    if (allData.length > 0) {
       displayData(allData);
       updateStats(allData);
-      loading.classList.add("hidden");
+      noData.style.display = "none";
     } else {
-      loading.classList.add("hidden");
+      tableBody.innerHTML = "";  // clear table
+      updateStats([]);           // reset stats counters
       noData.style.display = "block";
     }
+
+    loading.classList.add("hidden");
+
   } catch (error) {
     console.error("Error loading data:", error);
     loading.classList.add("hidden");

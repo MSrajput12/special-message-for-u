@@ -238,3 +238,24 @@ process.on('SIGINT', async () => {
   await client.close();
   process.exit(0);
 });
+// 🔥 Delete ALL responses
+app.delete('/api/responses', async (req, res) => {
+  try {
+    const collection = db.collection('responses');
+    const result = await collection.deleteMany({});
+
+    res.status(200).json({
+      success: true,
+      message: "All responses deleted!",
+      deletedCount: result.deletedCount
+    });
+  } catch (error) {
+    console.error("Error deleting all:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete all responses",
+      error: error.message
+    });
+  }
+});
+
