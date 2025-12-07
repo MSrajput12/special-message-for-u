@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Love Proposal — Premium</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<!-- Name Modal -->
+<div id="nameModal" class="modal">
+  <div class="modal-content">
+    <h2>Hey! I have a Secret for you 🤫</h2>
+    <p>May I know the name of my favorite person?</p>
+    <input type="text" id="nameInput" placeholder="Your Name..." maxlength="50" />
+    <button id="submitNameBtn" class="btn-submit">Continue</button>
+  </div>
+</div>
+
+<!-- Heart / particle containers -->
+<div id="heartRain"></div>
+<div id="brokenRain"></div>
+<div id="explosionLayer"></div>
+
+<!-- Center Card -->
+<div class="card-box">
+  <h1 id="question">Do you love me? ❤️</h1>
+  <div id="buttons" class="btn-row">
+    <button id="yesBtn" class="btn yes">YES ❤️</button>
+    <button id="noBtn" class="btn no">NO 💔</button>
+  </div>
+  <p id="message" class="msg"></p>
+</div>
+
+<!-- Admin View Button -->
+<button id="adminViewBtn" class="admin-btn">
+  <span class="eye-icon">👀</span>
+  <span>Admin</span>
+</button>
+
+<!-- Password Modal -->
+<div id="passwordModal" class="password-modal hidden">
+  <div class="password-modal-content">
+    <div class="lock-icon">🔐</div>
+    <h2>Admin Access</h2>
+    <p>Enter password to continue</p>
+    
+    <div class="password-input-wrapper">
+      <input type="password" id="passwordInput" placeholder="••••••" autocomplete="off" />
+      <button type="button" id="togglePassword" class="toggle-btn">👁️</button>
+    </div>
+    
+    <div class="modal-buttons">
+      <button id="cancelPasswordBtn" class="modal-btn cancel-btn">Cancel</button>
+      <button id="submitPasswordBtn" class="modal-btn submit-btn">Enter</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
