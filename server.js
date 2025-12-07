@@ -111,61 +111,49 @@ app.post('/api/admin/change-password', async (req, res) => {
   }
 });
 
-// Save user response
-// Save or update user response
-// Save or update user response
 // Save or update response
 app.post('/api/save-response', async (req, res) => {
   try {
     const { userName, buttonClicked } = req.body;
     const collection = db.collection('responses');
 
-    // Try to find existing record for this user
-    const existing = await collection.findOne({ userName });
+    let existing = await collection.findOne({ userName });
 
+    // NEW USER
     if (!existing) {
-      // First click → create record
       const newData = {
         userName,
         buttonClicked,
+        yesClickCount: buttonClicked === "YES" ? 1 : 0,
         noClickCount: buttonClicked === "NO" ? 1 : 0,
         createdAt: new Date(),
         timestamp: new Date()
       };
+
       await collection.insertOne(newData);
-      return res.status(201).json({
-        success: true,
-        message: "Record created!",
-        data: newData
-      });
-    } else {
-      // Update existing record
-      const update = {
-        $set: {
-          buttonClicked,
-          timestamp: new Date()
-        }
-      };
-
-      if (buttonClicked === "NO") {
-        update.$inc = { noClickCount: 1 }; // Increment NO count
-      }
-
-      const result = await collection.updateOne({ userName }, update);
-
-      return res.status(200).json({
-        success: true,
-        message: "Record updated!",
-        data: result
-      });
+      return res.status(201).json({ success: true, message: "Record created!", data: newData });
     }
+
+    // EXISTING USER
+    let updateOps = {
+      $set: { buttonClicked, timestamp: new Date() },
+      $inc: {}
+    };
+
+    if (buttonClicked === "YES") updateOps.$inc.yesClickCount = 1;
+    if (buttonClicked === "NO") updateOps.$inc.noClickCount = 1;
+
+    // FIX: if fields DO NOT EXIST (undefined), then create them
+    if (existing.yesClickCount === undefined) updateOps.$set.yesClickCount = 0;
+    if (existing.noClickCount === undefined) updateOps.$set.noClickCount = 0;
+
+    await collection.updateOne({ userName }, updateOps);
+
+    res.status(200).json({ success: true, message: "Record updated!" });
+
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      success: false,
-      message: "Server error",
-      error: error.message
-    });
+    console.error("Error:", error);
+    res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 });
 
@@ -220,35 +208,19 @@ app.get('/api/response/:userName', async (req, res) => {
   }
 });
 
-// Delete response by ID
-app.delete('/api/response/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { ObjectId } = require('mongodb');
-    
-    const collection = db.collection('responses');
-    const result = await collection.deleteOne({ _id: new ObjectId(id) });
+async function deleteResponse(id) {
+  // UI se row turant hata do
+  const row = document.querySelector(`[data-id="${id}"]`);
+  if (row) row.remove();
 
-    if (result.deletedCount === 1) {
-      res.status(200).json({
-        success: true,
-        message: 'Response deleted successfully'
-      });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: 'Response not found'
-      });
-    }
-  } catch (error) {
-    console.error('Error deleting response:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to delete response',
-      error: error.message
-    });
+  // Backend delete silently
+  try {
+    await fetch(`${API_URL}/response/${id}`, { method: "DELETE" });
+  } catch (e) {
+    console.error("Delete error:", e);
   }
-});
+}
+
 
 // Health check
 app.get('/api/health', (req, res) => {

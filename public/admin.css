@@ -594,18 +594,65 @@ tbody td:last-child {
 }
 
 /* No Clicks Count (Tech Blue Highlight) */
+/* ---------- 🔵 NO CLICKS BADGE (Blue Tech) ---------- */
 .no-clicks {
   display: inline-block;
   font-weight: 800;
-  font-family: 'Poppins', sans-serif; /* Monospace for numbers */
+  font-family: 'Poppins', sans-serif;
   color: #2563eb; /* Royal Blue */
-  background: #eff6ff; /* Light Tech Blue BG */
+  
+  background: linear-gradient(145deg, #eff6ff, #e0edff); /* Soft Blue Glass */
+  
   padding: 6px 14px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 0.95rem;
-  border: 1px solid rgba(37, 99, 235, 0.15); /* Subtle Blue Border */
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+
+  border: 1px solid rgba(37, 99, 235, 0.25); /* Soft Blue Border */
+  
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.05),
+    0 3px 8px rgba(37, 99, 235, 0.15); /* Outer glow */
+  
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.no-clicks:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.05),
+    0 5px 12px rgba(37, 99, 235, 0.25);
+}
+
+
+/* ---------- 🟢 YES CLICKS BADGE (Emerald Tech Glow) ---------- */
+.yes-clicks {
+  display: inline-block;
+  font-weight: 800;
+  font-family: 'Poppins', sans-serif;
+  color: #059669; /* Emerald */
+  
+  background: linear-gradient(145deg, #ecfdf5, #d1fae5); /* Soft Green Glass */
+  
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+
+  border: 1px solid rgba(5, 150, 105, 0.25); /* Emerald Border */
+  
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.05),
+    0 3px 8px rgba(5, 150, 105, 0.2); /* Soft Green Glow */
+  
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.yes-clicks:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 2px 4px rgba(0,0,0,0.05),
+    0 5px 12px rgba(5, 150, 105, 0.35); /* Stronger Glow */
+}
+
 
 /* ---------- 🖱️ CUSTOM TECH SCROLLBAR ---------- */
 /* Container Width/Height */

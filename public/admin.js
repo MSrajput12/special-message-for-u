@@ -74,29 +74,35 @@ function displayData(data) {
   data.forEach((item, index) => {
     const row = document.createElement("tr");
     row.style.animationDelay = `${index * 0.05}s`;
-    
+
     const date = new Date(item.timestamp);
-    const formattedDate = date.toLocaleDateString('en-IN', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
+    const formattedDate = date.toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
     });
-    const formattedTime = date.toLocaleTimeString('en-IN', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
+    const formattedTime = date.toLocaleTimeString("en-IN", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
     });
 
     row.innerHTML = `
       <td><strong>${index + 1}</strong></td>
       <td><strong>${item.userName}</strong></td>
+
       <td>
-        <span class="response-badge ${item.buttonClicked === 'YES' ? 'badge-yes' : 'badge-no'}">
-          ${item.buttonClicked === 'YES' ? '❤️ YES' : '💔 NO'}
+        <span class="response-badge ${item.buttonClicked === "YES" ? "badge-yes" : "badge-no"}">
+          ${item.buttonClicked === "YES" ? "❤️ YES" : "💔 NO"}
         </span>
       </td>
-      <td><span class="no-clicks">${item.noClickCount}</span></td>
+
+      <td><span class="yes-clicks">${item.yesClickCount || 0}</span></td>
+
+      <td><span class="no-clicks">${item.noClickCount || 0}</span></td>
+
       <td>${formattedDate} • ${formattedTime}</td>
+
       <td>
         <button class="delete-btn" onclick="deleteResponse('${item._id}')">🗑️</button>
       </td>
@@ -106,43 +112,21 @@ function displayData(data) {
   });
 }
 
-// Delete response - NO PROMPT, just smooth delete
+// Delete response instantly (NO confirmation popup)
 async function deleteResponse(id) {
-  const row = event.target.closest('tr');
-  
-  // Smooth fade animation
-  row.style.transition = 'all 0.4s ease';
-  row.style.opacity = '0.5';
-  row.style.transform = 'scale(0.95)';
-
   try {
-    const response = await fetch(`${API_URL}/response/${id}`, {
+    await fetch(`${API_URL}/response/${id}`, {
       method: 'DELETE'
     });
 
-    const data = await response.json();
+    // Refresh table immediately
+    loadData();
 
-    if (data.success) {
-      // Complete fade out
-      row.style.opacity = '0';
-      row.style.transform = 'scale(0.9) translateX(-30px)';
-      
-      setTimeout(async () => {
-        await loadData();
-      }, 400);
-    } else {
-      // Reset on failure
-      row.style.opacity = '1';
-      row.style.transform = 'scale(1)';
-      alert("❌ Failed to delete!");
-    }
   } catch (error) {
-    console.error("Error:", error);
-    row.style.opacity = '1';
-    row.style.transform = 'scale(1)';
-    alert("❌ Error deleting!");
+    console.error("Error deleting response:", error);
   }
 }
+
 
 // Make deleteResponse global
 window.deleteResponse = deleteResponse;
@@ -153,11 +137,13 @@ function updateStats(data) {
   const totalNo = data.filter(item => item.buttonClicked === 'NO').length;
   const totalViews = data.length;
   
+  // Calculate average NO clicks ONLY for users who clicked NO
   const noUsersData = data.filter(item => item.buttonClicked === 'NO');
   const avgNoClicks = noUsersData.length > 0 
     ? (noUsersData.reduce((sum, item) => sum + item.noClickCount, 0) / noUsersData.length).toFixed(1)
     : 0;
 
+  // Animate numbers
   animateNumber(totalYesEl, totalYes);
   animateNumber(totalNoEl, totalNo);
   animateNumber(totalViewsEl, totalViews);
@@ -182,7 +168,7 @@ function animateNumber(element, target) {
   }, 16);
 }
 
-// Change Password
+// Change Password Modal
 changePasswordBtn.addEventListener("click", () => {
   changePasswordModal.classList.remove("hidden");
   currentPasswordInput.value = "";
@@ -195,7 +181,7 @@ cancelChangePassword.addEventListener("click", () => {
   changePasswordModal.classList.add("hidden");
 });
 
-// Eye toggle
+// Eye toggle for password inputs
 document.querySelectorAll('.eye-toggle').forEach(btn => {
   btn.addEventListener('click', () => {
     const inputId = btn.getAttribute('data-input');
@@ -213,18 +199,18 @@ submitChangePassword.addEventListener("click", async () => {
   const confirm = confirmPasswordInput.value.trim();
   
   if (!current || !newPass || !confirm) {
-    alert("❌ All fields required!");
+    alert("❌ All fields are required!");
     return;
   }
   
   if (newPass !== confirm) {
-    alert("❌ Passwords don't match!");
+    alert("❌ New passwords don't match!");
     confirmPasswordInput.value = "";
     return;
   }
   
   if (newPass.length < 4) {
-    alert("❌ Min 4 characters!");
+    alert("❌ Password must be at least 4 characters!");
     return;
   }
   
@@ -234,7 +220,9 @@ submitChangePassword.addEventListener("click", async () => {
   try {
     const response = await fetch(`${API_URL}/admin/change-password`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         currentPassword: current,
         newPassword: newPass
@@ -244,13 +232,13 @@ submitChangePassword.addEventListener("click", async () => {
     const data = await response.json();
     
     if (data.success) {
-      alert("✅ Password changed!");
+      alert("✅ Password changed successfully!");
       changePasswordModal.classList.add("hidden");
     } else {
       alert("❌ " + data.message);
     }
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error changing password:", error);
     alert("❌ Error changing password!");
   } finally {
     submitChangePassword.textContent = "Update Password";
