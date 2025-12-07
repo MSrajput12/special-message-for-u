@@ -145,17 +145,6 @@ Server:
 | Start Command  | `node server.js` |
 | Environment    | Add MONGODB_URI  |
 
----
-
-## 📸 Screenshots
-
-(Add if you want)
-
-```
-📸 user-page.png  
-📸 admin-dashboard.png  
-📸 mobile-view.png  
-```
 
 ---
 
