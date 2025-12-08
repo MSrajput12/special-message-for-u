@@ -339,6 +339,9 @@ function shakeScreen(intensity, duration) {
   })();
 }
 
+
+
+
 /* ---------- Final Broken Mode ---------- */
 async function finalizeBroken() {
   finalBroken = true;

@@ -208,29 +208,67 @@ app.get('/api/response/:userName', async (req, res) => {
   }
 });
 
-async function deleteResponse(id) {
-  // UI se row turant hata do
-  const row = document.querySelector(`[data-id="${id}"]`);
-  if (row) row.remove();
 
-  // Backend delete silently
+// ---------------------- DELETE RESPONSE BY ID ----------------------
+app.delete('/api/response/:id', async (req, res) => {
   try {
-    await fetch(`${API_URL}/response/${id}`, { method: "DELETE" });
-  } catch (e) {
-    console.error("Delete error:", e);
+    const { id } = req.params;
+    const { ObjectId } = require("mongodb");
+
+    const result = await db.collection("responses").deleteOne({
+      _id: new ObjectId(id)
+    });
+
+    if (result.deletedCount === 1) {
+      return res.json({ success: true, message: "Response deleted" });
+    }
+
+    return res.status(404).json({
+      success: false,
+      message: "Not found"
+    });
+
+  } catch (error) {
+    console.error("Delete error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
-}
+});
 
 
-// Health check
+// ---------------------- DELETE ALL RESPONSES ----------------------
+app.delete('/api/responses', async (req, res) => {
+  try {
+    const result = await db.collection("responses").deleteMany({});
+    return res.json({
+      success: true,
+      deletedCount: result.deletedCount
+    });
+  } catch (error) {
+    console.error("Delete all error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete all"
+    });
+  }
+});
+
+
+// ---------------------- HEALTH CHECK ----------------------
 app.get('/api/health', (req, res) => {
   res.json({ status: 'Server is running!' });
 });
 
-// Start server
+
+// ---------------------- START SERVER (MUST BE LAST) ----------------------
 app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
+
+
+
 
 // Graceful shutdown
 process.on('SIGINT', async () => {
@@ -238,24 +276,5 @@ process.on('SIGINT', async () => {
   await client.close();
   process.exit(0);
 });
-// 🔥 Delete ALL responses
-app.delete('/api/responses', async (req, res) => {
-  try {
-    const collection = db.collection('responses');
-    const result = await collection.deleteMany({});
 
-    res.status(200).json({
-      success: true,
-      message: "All responses deleted!",
-      deletedCount: result.deletedCount
-    });
-  } catch (error) {
-    console.error("Error deleting all:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to delete all responses",
-      error: error.message
-    });
-  }
-});
 
