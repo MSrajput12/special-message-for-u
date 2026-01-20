@@ -150,7 +150,7 @@ Server:
 
 ## 👨‍💻 Author
 
-Made with ❤️ by **Adi Rajput**
+Made with ❤️ by **Manish Rajput**
 
 [![Instagram](https://img.shields.io/badge/Instagram-Follow-red?style=for-the-badge\&logo=instagram)](https://instagram.com/_the_manish_rajput_)
 [![GitHub](https://img.shields.io/badge/GitHub-Profile-black?style=for-the-badge\&logo=github)](https://github.com/MSrajput12)
